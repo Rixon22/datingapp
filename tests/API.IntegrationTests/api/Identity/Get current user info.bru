@@ -1,0 +1,15 @@
+meta {
+  name: Get current user info
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/account/user-info
+  body: none
+  auth: none
+}
+
+settings {
+  encodeUrl: true
+}

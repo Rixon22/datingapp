@@ -1,0 +1,19 @@
+meta {
+  name: Add photo for patricio (add 2 photos) - should both be in unapproved state
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{baseUrl}}/api/members/add-photo
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  File: @file(/Users/neil/Projects/ReventsCourse/ApiPhotos/bat2.jpg)
+}
+
+settings {
+  encodeUrl: true
+}

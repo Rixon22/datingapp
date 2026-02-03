@@ -1,0 +1,19 @@
+meta {
+  name: Get Validation Error
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/account/register
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {}
+}
+
+settings {
+  encodeUrl: true
+}

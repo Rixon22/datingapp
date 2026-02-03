@@ -1,0 +1,22 @@
+meta {
+  name: Logout (remove cookie)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/account/logout
+  body: json
+  auth: inherit
+}
+
+script:post-response {
+  test("Has Set-Cookie header", function () {
+      const cookies = res.getHeader('Set-Cookie');
+      expect(cookies).to.include('.AspNetCore.Identity.Application=');
+  });
+}
+
+settings {
+  encodeUrl: true
+}

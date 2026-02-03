@@ -1,0 +1,15 @@
+meta {
+  name: Get Null Ref Error
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/error/server-error
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

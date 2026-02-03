@@ -1,0 +1,26 @@
+meta {
+  name: Create Message From bob to arenita
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/messages
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{bob_token}}
+}
+
+body:json {
+  {
+      "recipientId": "arenita-id",
+      "content": "Test message from bob to arenita"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

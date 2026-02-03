@@ -1,0 +1,15 @@
+meta {
+  name: Get arenita photos (should see the unapproved photos when logged in as arenita)
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/members/arenita-id/photos
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

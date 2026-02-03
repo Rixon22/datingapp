@@ -1,0 +1,40 @@
+meta {
+  name: Register User
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/account/register
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "gender": "male",
+      "email": "bob@test.com",
+      "displayName": "Bob",
+      "dateOfBirth": "1985-01-23",
+      "city": "Bikini",
+      "country": "Bottom",
+      "password": "Pa$$w0rd"
+  }
+}
+
+script:post-response {
+  const user = res.getBody();
+  
+  test("Has properties", function () {
+      expect(user).to.have.property('username');
+      expect(user).to.have.property('token');
+  });
+  
+  if (test("Has properties")) {
+      bru.setGlobalEnvVar('token', user.token);
+  }
+}
+
+settings {
+  encodeUrl: true
+}

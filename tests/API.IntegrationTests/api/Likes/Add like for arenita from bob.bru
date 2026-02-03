@@ -1,0 +1,23 @@
+meta {
+  name: Add like for arenita from bob
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/likes/arenita-id
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{bob_token}}
+}
+
+body:json {
+  {}
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,24 @@
+meta {
+  name: Get Users orderedby lastActive
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/members?orderBy=lastActive
+  body: none
+  auth: inherit
+}
+
+params:query {
+  orderBy: lastActive
+  ~gender: female
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

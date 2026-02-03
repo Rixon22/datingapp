@@ -1,0 +1,15 @@
+meta {
+  name: Approve photo for patricio (need to add the id of unapproved photo) - ensure it gets set as the main photo
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{baseUrl}}/api/admin/approve-photo/13
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

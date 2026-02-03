@@ -1,0 +1,19 @@
+meta {
+  name: Add photo for user (add 2 photos here)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/members/add-photo
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  File: @file(/Users/neil/Projects/ReventsCourse/ApiPhotos/wonder2.jpg)
+}
+
+settings {
+  encodeUrl: true
+}

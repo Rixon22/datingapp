@@ -1,0 +1,23 @@
+meta {
+  name: Get Liked Users Liked by
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/likes?predicate=likedBy
+  body: none
+  auth: inherit
+}
+
+params:query {
+  predicate: likedBy
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,35 @@
+meta {
+  name: Login as arenita and save token to env
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/account/login
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+  	"email": "arenita@test.com",
+  	"password": "Pa$$w0rd"
+  }
+}
+
+script:post-response {
+  const user = res.getBody();
+  
+  test("Has properties", function () {
+      expect(user).to.have.property('username');
+      expect(user).to.have.property('token');
+  });
+  
+  if (test("Has properties")) {
+      bru.setGlobalEnvVar('token', user.token);
+  }
+}
+
+settings {
+  encodeUrl: true
+}

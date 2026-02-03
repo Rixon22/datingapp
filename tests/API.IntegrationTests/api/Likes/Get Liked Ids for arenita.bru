@@ -1,0 +1,19 @@
+meta {
+  name: Get Liked Ids for arenita
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/likes/list
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

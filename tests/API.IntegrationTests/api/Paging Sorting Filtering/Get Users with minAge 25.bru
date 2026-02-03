@@ -1,0 +1,23 @@
+meta {
+  name: Get Users with minAge 25
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/members?minAge=25
+  body: none
+  auth: inherit
+}
+
+params:query {
+  minAge: 25
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

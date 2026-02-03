@@ -1,0 +1,27 @@
+meta {
+  name: Register user patricio
+  type: http
+  seq: 6
+}
+
+post {
+  url: https://localhost:5001/api/account/register
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+      "gender": "male",
+      "email": "patricio@test.com",
+      "displayName": "Patricio",
+      "dateOfBirth": "1985-01-23",
+      "city": "Bikini",
+      "country": "Bottom",
+      "password": "Pa$$w0rd"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,23 @@
+meta {
+  name: Get Users with maxAge 40
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/members?maxAge=40
+  body: none
+  auth: inherit
+}
+
+params:query {
+  maxAge: 40
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

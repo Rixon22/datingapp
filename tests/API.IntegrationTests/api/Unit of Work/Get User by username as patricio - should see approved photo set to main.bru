@@ -1,0 +1,19 @@
+meta {
+  name: Get User by username as patricio - should see approved photo set to main
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{baseUrl}}/api/members/c8cffdd2-7e99-45ab-af07-ae80d8b9b562
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{bob_token}}
+}
+
+settings {
+  encodeUrl: true
+}

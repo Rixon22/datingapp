@@ -1,0 +1,15 @@
+meta {
+  name: Get Roles as admin
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/api/admin/users-with-roles
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

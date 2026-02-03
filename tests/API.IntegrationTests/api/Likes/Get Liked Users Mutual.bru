@@ -1,0 +1,23 @@
+meta {
+  name: Get Liked Users Mutual
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/likes?predicate=mutual
+  body: none
+  auth: inherit
+}
+
+params:query {
+  predicate: mutual
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

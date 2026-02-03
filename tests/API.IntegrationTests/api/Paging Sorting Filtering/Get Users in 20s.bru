@@ -1,0 +1,24 @@
+meta {
+  name: Get Users in 20s
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/members?minAge=20&maxAge=29
+  body: none
+  auth: inherit
+}
+
+params:query {
+  minAge: 20
+  maxAge: 29
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

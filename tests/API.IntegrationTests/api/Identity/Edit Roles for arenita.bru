@@ -1,0 +1,19 @@
+meta {
+  name: Edit Roles for arenita
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{baseUrl}}/api/admin/edit-roles/arenita-id?roles=Moderator,Member
+  body: none
+  auth: inherit
+}
+
+params:query {
+  roles: Moderator,Member
+}
+
+settings {
+  encodeUrl: true
+}

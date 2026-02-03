@@ -1,0 +1,21 @@
+meta {
+  name: Register user query string
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/account/register?email=doncangrejo@test.com&password=password&displayName=DonCangrejo
+  body: json
+  auth: inherit
+}
+
+params:query {
+  email: doncangrejo@test.com
+  password: password
+  displayName: DonCangrejo
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,33 @@
+meta {
+  name: Login as patricio with cookie
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/login?useCookies=true
+  body: json
+  auth: inherit
+}
+
+params:query {
+  useCookies: true
+}
+
+body:json {
+  {
+  	"email": "patricio@test.com",
+  	"password": "Pa$$w0rd"
+  }
+}
+
+script:post-response {
+  test("Has Set-Cookie header", function () {
+      const cookies = res.getHeader('Set-Cookie');
+      expect(cookies).to.include('.AspNetCore.Identity.Application=');
+  });
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,23 @@
+meta {
+  name: Get Outbox Messages for bob
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/messages?container=Outbox
+  body: none
+  auth: inherit
+}
+
+params:query {
+  container: Outbox
+}
+
+headers {
+  Authorization: Bearer {{bob_token}}
+}
+
+settings {
+  encodeUrl: true
+}

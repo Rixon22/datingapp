@@ -1,0 +1,19 @@
+meta {
+  name: Get Default Messages for bob
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/messages
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{bob_token}}
+}
+
+settings {
+  encodeUrl: true
+}

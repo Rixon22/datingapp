@@ -1,0 +1,22 @@
+{
+  "runtime": "Net90",
+  "defaultVariables": null,
+  "documentGenerator": {
+    "aspNetCoreToOpenApi": {
+      "project": "$(Project)",
+      "documentName": "v1",
+      "msBuildProjectExtensionsPath": null,
+      "configuration": "$(Configuration)",
+      "runtime": null,
+      "targetFramework": null,
+      "noBuild": true,
+      "msBuildOutputPath": "$(MsBuildOutputPath)",
+      "verbose": false,
+      "workingDirectory": null,
+      "aspNetCoreEnvironment": "Development",
+      "output": "../../openapi-specs/openapi.json",
+      "newLineBehavior": "Auto"
+    }
+  },
+  "codeGenerators": {}
+}

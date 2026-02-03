@@ -1,0 +1,23 @@
+meta {
+  name: Get Outbox Messages for arenita
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/messages?container=Outbox
+  body: none
+  auth: inherit
+}
+
+params:query {
+  container: Outbox
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

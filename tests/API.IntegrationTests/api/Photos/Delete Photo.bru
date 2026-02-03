@@ -1,0 +1,19 @@
+meta {
+  name: Delete Photo
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{baseUrl}}/api/members/delete-photo/11
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+settings {
+  encodeUrl: true
+}

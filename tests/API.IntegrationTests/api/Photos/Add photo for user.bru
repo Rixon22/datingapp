@@ -1,0 +1,23 @@
+meta {
+  name: Add photo for user
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/members/add-photo
+  body: multipartForm
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+body:multipart-form {
+  File: @file(/Users/neil/Library/CloudStorage/SynologyDrive-Projects/work/DatingAppCourse/ApiPhotos/wonder3.jpg)
+}
+
+settings {
+  encodeUrl: true
+}

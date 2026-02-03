@@ -1,0 +1,15 @@
+meta {
+  name: Get Members
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/members
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

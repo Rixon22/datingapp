@@ -1,0 +1,15 @@
+meta {
+  name: Get Photos to moderate (login as admin)
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/admin/photos-to-moderate
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

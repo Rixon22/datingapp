@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Interfaces;
 using API.Mappers;
 using Microsoft.AspNetCore.Authorization;
@@ -36,19 +37,20 @@ public class MembersController(IMembersRepository membersRepository) : BaseApiCo
     [HttpPut]
     public async Task<ActionResult> UpdateMember(MemberUpdateRequest request)
     {
-        var memberId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        if (memberId == null) return BadRequest("Member ID not found in token.");
-
-        var member = await membersRepository.GetMemberAsync(memberId);
+        var memberId = User.GetMemberId();
+        
+        if (string.IsNullOrEmpty(memberId)) return BadRequest("User ID not found.");
+        
+        var member = await membersRepository.GetMemberForUpdate(memberId);
 
         if (member == null) return BadRequest("Member not found.");
 
         member.DisplayName = request.DisplayName ?? member.DisplayName;
-        member.DisplayName = string.IsNullOrEmpty(request.DisplayName) ? member.DisplayName : request.DisplayName;
         member.Description = request.Description ?? member.Description;
         member.City = request.City ?? member.City;
         member.Country = request.Country ?? member.Country;
+
+        member.User.DisplayName = request.DisplayName ?? member.User.DisplayName;
 
         membersRepository.Update(member);
 

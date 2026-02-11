@@ -41,7 +41,7 @@ public class MembersController(IMembersRepository membersRepository) : BaseApiCo
         
         if (string.IsNullOrEmpty(memberId)) return BadRequest("User ID not found.");
         
-        var member = await membersRepository.GetMemberForUpdate(memberId);
+        var member = await membersRepository.GetMemberForUpdateAsync(memberId);
 
         if (member == null) return BadRequest("Member not found.");
 

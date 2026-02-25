@@ -23,12 +23,7 @@ public class PhotoService : IPhotoService
         return await _cloudinary.DestroyAsync(deleteParams);
     }
 
-    public Task<ImageUploadResult> UploadPhotoAsync(IFormFile formFile)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<ImageUploadResult> UploadPhotoAsyng(IFormFile file)
+    public async Task<ImageUploadResult> UploadPhotoAsync(IFormFile file)
     {
         var uploadResult = new ImageUploadResult();
 

@@ -11,7 +11,7 @@
       class="flex flex-col items-center justify-center w-full border-2
             border-gray-300 h-full border-dashed rounded-lg cursor-pointer">
       <p class="mb-2 text-lg">Click to select / drag & drop</p>
-      <input type="file" id="dropzone-file" class="hidden">
+      <input type="file" id="dropzone-file" class="hidden" (change)="onFileSelected($event)">
     </label>
   </div>
   @if (imageSource()) {

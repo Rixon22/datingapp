@@ -16,7 +16,7 @@
         },
         "@schematics/angular:guard": {
           "skipTests": false,
-          "path": "src/core/guard"
+          "path": "src/core/guards"
         },
         "@schematics/angular:interceptor": {
           "skipTests": false,
@@ -82,9 +82,7 @@
         },
         "serve": {
           "options": {
-            "ssl": true,
-            "sslCert": "./ssl/localhost.pem",
-            "sslKey": "./ssl/localhost-key.pem"
+            "ssl": false
           },
           "builder": "@angular/build:dev-server",
           "configurations": {

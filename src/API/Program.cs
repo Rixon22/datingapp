@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.Json.Serialization;
 using API.Data;
+using API.Helpers;
 using API.Interfaces;
 using API.Middlewares;
 using API.Services;
@@ -133,5 +134,7 @@ public static class Program
     {
         builder.Services.AddScoped<ITokenService, TokenService>();
         builder.Services.AddScoped<IMembersRepository, MembersRepository>();
+        builder.Services.AddScoped<IPhotoService, PhotoService>();
+        builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
     }
 }

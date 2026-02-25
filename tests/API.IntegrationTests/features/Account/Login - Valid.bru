@@ -17,6 +17,10 @@ body:json {
   }
 }
 
+vars:pre-request {
+  baseUrl: https://localhost:5001
+}
+
 tests {
   test("Should be able to login", function() {
     expect(res.getStatus()).to.equal(200);

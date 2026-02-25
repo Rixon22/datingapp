@@ -1,12 +1,29 @@
-@if (photos$ | async; as photos) {
-  @if (photos.length > 0) {
+@if (!membersService.editMode()) {
+  @if (photos().length > 0) {
     <div class="grid grid-cols-4 auto-rows-min gap-3 p-5 h-[65vh] overflow-auto">
-      @for (photo of photos; track photo.id) {
-        <img src="{{photo.url}}" alt="Member photo" class="w-full rounded-lg">
-      }
-      @for (photo of photoMocks; track $index) {
-        <img src="{{photo.url}}" alt="Member photo" class="w-full rounded-lg">
+      @for (photo of photos(); track photo.id) {
+        <div class="relative">
+          <img [src]="photo.url" alt="Member" class="w-full rounded-lg">
+          
+          @if (accountService.currentUser()?.id === membersService.member()?.id) {
+            <app-delete-button
+              [disabled]="photo.url === membersService.member()?.imageUrl"
+              (clickEvent)="deletePhoto(photo.id)"
+              class="absolute top-1 left-1"
+            />
+            <app-icon-button
+              [disabled]="photo.url === membersService.member()?.imageUrl"
+              [selected]="photo.url === membersService.member()?.imageUrl"
+              (clickEvent)="setMainPhoto(photo)"
+              class="absolute top-1 right-1"
+            />
+          }
+        </div>        
       }
     </div>
+  } @else {
+    <p class="text-center text-gray-500">No photos</p>
   }
+} @else {
+  <app-image-upload (uploadFile)="onUploadImage($event)" [loading]="loading()" />
 }

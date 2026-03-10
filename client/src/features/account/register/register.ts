@@ -1,9 +1,10 @@
-import { Component, inject, OnInit, output, signal  } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Component, inject, output, signal  } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AccountService } from '../../../core/services/account-service';
 import { RegisterCreds } from '../../../types/user';
 import { JsonPipe } from '@angular/common';
 import { TextInput } from "../../../shared/text-input/text-input";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -13,16 +14,18 @@ import { TextInput } from "../../../shared/text-input/text-input";
 })
 export class Register {
   private accountService = inject(AccountService);
+  private router = inject(Router);
   private fb = inject(FormBuilder);
   protected creds = {} as RegisterCreds;
 
   protected credentialsForm: FormGroup;
   protected profileForm: FormGroup;
   protected currentStep = signal(1);  cancelRegister = output<boolean>();
+  protected validationErrors = signal<string[]>([]);
 
    constructor() {
    this.credentialsForm = this.fb.group({
-      email: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$")]],
+      email: ['', [Validators.required, Validators.email]],
       displayName: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
       confirmPassword: ['', [Validators.required, this.matchValues('password')]]
@@ -66,13 +69,18 @@ export class Register {
   }
 
   register(): void {
-    console.group("REGISTER");
-    console.log(this.credentialsForm.value);
-    console.log(this.profileForm.value);
-    console.log(this.currentStep());
     if (this.credentialsForm.valid && this.profileForm.valid) {
       const formData = { ...this.credentialsForm.value, ...this.profileForm.value };
-      console.log('Form data:', formData);
+
+      this.accountService.register(formData).subscribe({
+        next: () => {
+          this.router.navigateByUrl('/members');
+        },
+        error: error => {
+          this.validationErrors.set(error);
+          console.log(error);
+        }
+      });
     }
   }
 

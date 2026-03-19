@@ -1,4 +1,13 @@
-@if (paginatedMembers$ | async; as paginationResult) {
+@if (paginatedMembers(); as paginationResult) {
+    @if (paginationResult.metadata; as metadata) {
+    <app-paginator
+      [pageNumber]="metadata.pageNumber"
+      [totalCount]="metadata.totalCount"
+      [pageSize]="metadata.pageSize"
+      [totalPages]="metadata.totalPages"
+      (pageChange)="onPageChange($event)"
+    />
+  }
   @if (paginationResult.items; as members) {
     <div class="grid grid-cols-5 gap-6">
       @for (member of members; track member.id) {

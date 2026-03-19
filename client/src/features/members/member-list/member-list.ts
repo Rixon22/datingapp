@@ -1,22 +1,46 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild  } from '@angular/core';
 import { MembersService } from '../../../core/services/members-service';
-import { Member } from '../../../types/member';
-import { Observable } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { Member, MemberParams } from '../../../types/member';
 import { MemberCard } from "../member-card/member-card";
 import { PaginationResult } from '../../../types/paginationMetadata';
+import { Paginator } from "../../../shared/paginator/paginator";
+import { FilterModal } from '../filter-modal/filter-modal';
 
 @Component({
   selector: 'app-member-list',
-  imports: [AsyncPipe, MemberCard],
+  imports: [ MemberCard, Paginator],
   templateUrl: './member-list.html',
   styleUrl: './member-list.css'
 })
-export class MemberList {
+export class MemberList implements OnInit {
+  @ViewChild('filterModal') modal!: FilterModal;
   private membersService = inject(MembersService);
-  protected paginatedMembers$: Observable<PaginationResult<Member>>;
+  protected paginatedMembers = signal<PaginationResult<Member> | null>(null);
+  protected memberParams = new MemberParams();
 
-  constructor() {
-    this.paginatedMembers$ = this.membersService.getMembers();
+  ngOnInit(): void {
+    this.loadMembers();
+  }
+
+  loadMembers() {
+    this.membersService.getMembers(this.memberParams).subscribe({      next: result => {
+        this.paginatedMembers.set(result);
+      }
+    }) 
+   }
+
+  onPageChange(event: { pageNumber: number, pageSize: number }) {
+    this.memberParams.pageNumber = event.pageNumber;
+    this.memberParams.pageSize = event.pageSize;
+    this.loadMembers();  
+  }
+
+
+  openModal() {
+    this.modal.open();
+  }
+
+  onClose() {
+    console.log('Modal closed');
   }
 }

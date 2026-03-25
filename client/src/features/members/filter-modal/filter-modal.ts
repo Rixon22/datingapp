@@ -5,7 +5,6 @@ import { MemberParams } from '../../../types/member';
   selector: 'app-filter-modal',
   imports: [],
   templateUrl: './filter-modal.html',
-  styleUrl: './filter-modal.css'
 })
 export class FilterModal {
   @ViewChild('filterModal') modalRef!: ElementRef<HTMLDialogElement>;

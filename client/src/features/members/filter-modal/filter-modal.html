@@ -1,8 +1,29 @@
 <dialog #filterModal class="modal">
   <div class="modal-box">
     <h3 class="text-lg font-bold">Hello!</h3>
-    <p class="py-4">Press ESC key or click the button below to close</p>
-    <div class="modal-action">
+   <div class="flex justify-between w-full items-center mt-6">
+      <div class="flex flex-col w-full gap-6">
+        <label class="flex justify-between items-center">
+          <span class="font-semibold">Gender:</span>
+          <form class="filter">
+            <input type="reset" value="X" class="btn btn-square">
+            <input type="radio" class="btn" aria-label="Female"
+              [(ngModel)]="memberParams.gender" name="gender" value="female">
+            <input type="radio" class="btn" aria-label="Male"
+              [(ngModel)]="memberParams.gender" name="gender" value="male">
+          </form>
+        </label>
+        <label class="flex justify-between items-center">
+          <span class="font-semibold">Age:</span>
+          <div class="flex gap-3">
+            <input type="number" class="input w-20" [min]="18"
+              [(ngModel)]="memberParams.minAge" (change)="onMinAgeChange()">
+            <input type="number" class="input w-20" [min]="18" [max]="120"
+              [(ngModel)]="memberParams.maxAge" (change)="onMaxAgeChange()">
+          </div>
+        </label>
+      </div>
+    </div>    <div class="modal-action">
       <button (click)="submit()" class="btn btn-primary">Submit</button>
     </div>
   </div>

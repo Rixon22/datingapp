@@ -22,6 +22,15 @@
               [(ngModel)]="memberParams.maxAge" (change)="onMaxAgeChange()">
           </div>
         </label>
+        <label class="flex justify-between items-center">
+          <span class="font-semibold">Order by: </span>
+          <select name="orderBy" class="select" [(ngModel)]="memberParams.orderBy">
+            <option disabled selected>Order by</option>
+            <option value="created">Newest members</option>
+            <option value="lastActive">Last active members</option>
+            <option value="age">Younger members</option>
+          </select>
+          </label>
       </div>
     </div>    <div class="modal-action">
       <button (click)="submit()" class="btn btn-primary">Submit</button>

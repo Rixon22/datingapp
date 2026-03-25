@@ -231,13 +231,21 @@
             "x-position": 4
           },
           {
+            "name": "OrderBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 5
+          },
+          {
             "name": "PageNumber",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 5
+            "x-position": 6
           },
           {
             "name": "PageSize",
@@ -246,7 +254,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 6
+            "x-position": 7
           }
         ],
         "responses": {

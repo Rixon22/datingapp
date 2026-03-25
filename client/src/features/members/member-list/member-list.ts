@@ -15,6 +15,7 @@ import { FilterModal } from '../filter-modal/filter-modal';
 export class MemberList implements OnInit {
   @ViewChild('filterModal') modal!: FilterModal;
   private membersService = inject(MembersService);
+  private updatedParams = new MemberParams();
   protected paginatedMembers = signal<PaginationResult<Member> | null>(null);
   protected memberParams = new MemberParams();
 
@@ -45,12 +46,32 @@ export class MemberList implements OnInit {
   }
 
    onFilterChange(data: MemberParams) {
-    this.memberParams = data;
+    this.memberParams = {...data};
+    this.updatedParams = {...data};
     this.loadMembers();
   }
 
   resetFilters() {
     this.memberParams = new MemberParams();
     this.loadMembers();
+  }
+
+  get displayMesage(): string {
+    const defaultParams = new MemberParams();
+    const filters: string[] = [];
+
+    if (this.updatedParams.gender) {
+      filters.push(this.updatedParams.gender + 's');
+    } else {
+      filters.push('Males, Females');
+    }
+
+    if (this.updatedParams.minAge !== defaultParams.minAge || this.updatedParams.maxAge !== defaultParams.maxAge) {
+      filters.push(` ages ${this.updatedParams.minAge}-${this.updatedParams.maxAge}`)
+    }
+
+    filters.push(this.updatedParams.orderBy === 'age' ? 'Youngest members' : this.updatedParams.orderBy === 'lastActive' ? 'Recently active' : 'Newest members');
+
+    return filters.length > 0 ? `Selected: ${filters.join('  | ')}` : 'All members';
   }
 }

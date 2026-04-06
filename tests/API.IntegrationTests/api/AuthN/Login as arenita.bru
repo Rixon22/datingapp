@@ -23,7 +23,7 @@ tests {
   });
   
   const data = res.body;
-  bru.setEnvVar('arenitaToken', data.token);
+  bru.setVar('token', data.token);
 }
 
 tests {
@@ -38,5 +38,4 @@ tests {
 
 settings {
   encodeUrl: true
-  timeout: 0
 }

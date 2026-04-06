@@ -1,1 +1,10 @@
-<p>lists works!</p>
+<div class="tabs tabs-box tabs-lg text-primary w-fit">
+  @for (tab of tabs; track $index) {
+    <button role="tab" class="tab"
+      [class.tab-active]="predicate === tab.value"
+      (click)="setPredicate(tab.value)"
+    >
+      {{tab.label}}
+    </button>
+  }
+</div>

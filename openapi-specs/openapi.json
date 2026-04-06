@@ -187,6 +187,94 @@
         }
       }
     },
+    "/api/Likes/{targetMemberId}": {
+      "post": {
+        "tags": [
+          "Likes"
+        ],
+        "operationId": "Likes_ToggleLike",
+        "parameters": [
+          {
+            "name": "targetMemberId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Likes/list": {
+      "get": {
+        "tags": [
+          "Likes"
+        ],
+        "operationId": "Likes_GetCurrentMemberLikes",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Likes": {
+      "get": {
+        "tags": [
+          "Likes"
+        ],
+        "operationId": "Likes_GetMemberLikes",
+        "parameters": [
+          {
+            "name": "predicate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Member"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Members": {
       "get": {
         "tags": [

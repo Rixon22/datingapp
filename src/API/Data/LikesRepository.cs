@@ -27,14 +27,14 @@ public class LikesRepository(AppDbContext context) : ILikesRepository
     {
         var query = context.Likes.AsQueryable();
 
-        switch(predicate)
+        switch(predicate.ToLower())
         {
             case "liked":
                 return await query
                     .Where(q => q.SourceMemberId == memberId)
                     .Select(q => q.TargetMember)
                     .ToListAsync();
-            case "likedBy":
+            case "likedby":
                 return await query
                     .Where(q => q.TargetMemberId == memberId)
                     .Select(q => q.SourceMember)

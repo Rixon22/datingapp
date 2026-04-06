@@ -135,6 +135,7 @@ public static class Program
         builder.Services.AddScoped<ITokenService, TokenService>();
         builder.Services.AddScoped<IMembersRepository, MembersRepository>();
         builder.Services.AddScoped<IPhotoService, PhotoService>();
+        builder.Services.AddScoped<ILikesRepository, LikesRepository>();
         builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
         builder.Services.AddScoped<UserActivityLogger>();
     }

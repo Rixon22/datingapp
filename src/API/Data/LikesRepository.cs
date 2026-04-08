@@ -23,29 +23,32 @@ public class LikesRepository(AppDbContext context) : ILikesRepository
         return await context.Likes.FindAsync(sourceMemberId, targetMemberId);
     }
 
-    public async Task<IReadOnlyList<Member>> GetMemberLikes(string predicate, string memberId)
+    public async Task<PaginationResult<Member>> GetMemberLikes(LikesRequest request)
     {
         var query = context.Likes.AsQueryable();
+        IQueryable<Member> result;
 
-        switch(predicate.ToLower())
+        switch(request.Predicate.ToLower())
         {
             case "liked":
-                return await query
-                    .Where(q => q.SourceMemberId == memberId)
-                    .Select(q => q.TargetMember)
-                    .ToListAsync();
+                result = query
+                    .Where(q => q.SourceMemberId == request.MemberId)
+                    .Select(q => q.TargetMember);
+                break;
             case "likedby":
-                return await query
-                    .Where(q => q.TargetMemberId == memberId)
-                    .Select(q => q.SourceMember)
-                    .ToListAsync();
+                result = query
+                    .Where(q => q.TargetMemberId == request.MemberId)
+                    .Select(q => q.SourceMember);
+                break;
             default: // Mutual like
-                var likeIds = await GetCurrentMemberLikeIds(memberId);
-                return await query
-                    .Where(q => q.TargetMemberId == memberId && likeIds.Contains(q.SourceMemberId))
-                    .Select(q => q.SourceMember)
-                    .ToListAsync();
+                var likeIds = await GetCurrentMemberLikeIds(request.MemberId);
+                result = query
+                    .Where(q => q.TargetMemberId == request.MemberId && likeIds.Contains(q.SourceMemberId))
+                    .Select(q => q.SourceMember);
+                break;
         }
+
+        return await Pagination.CreateAsync(result, request.PageNumber, request.PageSize);
     }
 
     public async Task<bool> SaveAllChanges()

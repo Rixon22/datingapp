@@ -8,7 +8,7 @@ public interface ILikesRepository
     void Delete(MemberLike like);
     Task<IReadOnlyList<string>> GetCurrentMemberLikeIds(string memberId);
     Task<MemberLike?> GetMemberLike(string sourceMemberId, string targetMemberId);
-    Task<IReadOnlyList<Member>> GetMemberLikes(string predicate, string memberId);
+    Task<PaginationResult<Member>> GetMemberLikes(LikesRequest likesRequest);
     Task<bool> SaveAllChanges();
     
 }

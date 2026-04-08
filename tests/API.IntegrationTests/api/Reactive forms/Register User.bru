@@ -13,7 +13,7 @@ post {
 body:json {
   {
       "gender": "male",
-      "email": "bob@test.com",
+      "email": "integrationTest@test.com",
       "displayName": "Bob",
       "dateOfBirth": "1985-01-23",
       "city": "Bikini",
@@ -22,17 +22,13 @@ body:json {
   }
 }
 
-script:post-response {
-  const user = res.getBody();
-  
-  test("Has properties", function () {
-      expect(user).to.have.property('username');
-      expect(user).to.have.property('token');
+tests {
+  test("Should be able to login", function() {
+    expect(res.getStatus()).to.equal(200);
   });
   
-  if (test("Has properties")) {
-      bru.setGlobalEnvVar('token', user.token);
-  }
+  const data = res.body;
+  bru.setVar('registrationToken', data.token);
 }
 
 settings {

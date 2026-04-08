@@ -10,7 +10,10 @@ get {
   auth: none
 }
 
+headers {
+  Authorization: Bearer {{token}}
+}
+
 settings {
   encodeUrl: true
-  timeout: 0
 }

@@ -5,13 +5,13 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}/api/users/arenita-id
+  url: {{baseUrl}}/api/members/arenita-id
   body: none
   auth: inherit
 }
 
 headers {
-  Authorization: Bearer {{token}}
+  Authorization: Bearer {{registrationToken}}
 }
 
 settings {

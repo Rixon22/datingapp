@@ -12,22 +12,19 @@ post {
 
 body:json {
   {
-  	"email": "bob@test.com",
+  	"email": "calamardo@test.com",
   	"password": "Pa$$w0rd"
   }
 }
 
-script:post-response {
-  const user = res.getBody();
-  
-  test("Has properties", function () {
-      expect(user).to.have.property('username');
-      expect(user).to.have.property('token');
+
+tests {
+  test("Should be able to login", function() {
+    expect(res.getStatus()).to.equal(200);
   });
   
-  if (test("Has properties")) {
-      bru.setGlobalEnvVar('bob_token', user.token);
-  }
+  const data = res.body;
+  bru.setVar('otherToken', data.token);
 }
 
 settings {

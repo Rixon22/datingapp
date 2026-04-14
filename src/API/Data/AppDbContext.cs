@@ -29,6 +29,25 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             .WithMany(t => t.LikedByMembers)
             .HasForeignKey(s => s.TargetMemberId)
             .OnDelete(DeleteBehavior.NoAction);
+        
+        modelBuilder.Entity<Message>()
+            .HasOne(m => m.Recipient)
+            .WithMany(mr => mr.MessagesReceived)
+            .OnDelete(DeleteBehavior.Restrict);
+        
+        modelBuilder.Entity<Message>()
+            .HasOne(m => m.Sender)
+            .WithMany(mr => mr.MessagesSent)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // modelBuilder.Entity<Message>()
+        //     .Property(m => m.RecipientDeleted)
+        //     .HasDefaultValue(false);
+        
+        // modelBuilder.Entity<Message>()
+        //     .Property(m => m.SenderDeleted)
+        //     .HasDefaultValue(false);
+
 
         var dateTimeConverter = new ValueConverter<DateTime, DateTime>(
             v => v.ToUniversalTime(),

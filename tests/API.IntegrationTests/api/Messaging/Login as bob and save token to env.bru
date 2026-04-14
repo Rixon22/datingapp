@@ -12,8 +12,8 @@ post {
 
 body:json {
   {
-  	"email": "bob@test.com",
-  	"password": "Pa$$w0rd"
+    "email": "calamardo@test.com",
+    "password": "Pa$$w0rd"
   }
 }
 
@@ -21,12 +21,11 @@ script:post-response {
   const user = res.getBody();
   
   test("Has properties", function () {
-      expect(user).to.have.property('username');
-      expect(user).to.have.property('bob_token');
+      expect(user).to.have.property('accessToken');
   });
   
   if (test("Has properties")) {
-      bru.setGlobalEnvVar('bob_token', user.token);
+      bru.setGlobalEnvVar('otherToken', user.accessToken);
   }
 }
 

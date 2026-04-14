@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using API.Controllers;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ public class MembersControllerTests
 {
     private MembersController _membersController;
     private IMembersRepository _mockMembersRepository;
+    private IPhotoService _mockPhotoService;
 
     private const int NOT_FOUND = 404;
     private const string NOT_FOUND_ERROR_MESSAGE = "Expected NotFoundObjectResult but got something else";
@@ -22,8 +24,8 @@ public class MembersControllerTests
     public void Setup()
     {
         _mockMembersRepository = Substitute.For<IMembersRepository>();
-        _membersController = new MembersController(_mockMembersRepository);
-
+        _mockPhotoService = Substitute.For<IPhotoService>();
+        _membersController = new MembersController(_mockMembersRepository, _mockPhotoService);
         var userId = "userId";
         DefaultHttpContext testHttpContext = new()
         {
@@ -41,13 +43,16 @@ public class MembersControllerTests
     public async Task GetMembers_Valid_ReturnMembers()
     {
         // Arrange
-        IReadOnlyList<Member> expectedMembers = [GetTestMember() ];
-
-        _mockMembersRepository.GetMembersAsync().Returns(expectedMembers);
-
+        IReadOnlyList<Member> expectedMembers = [ GetTestMember() ];
+        PaginationResult<Member> paginationResult = new()
+        {
+            Items = [.. expectedMembers],
+        };
+        var memberRequest = new MemberRequest {};
+        _mockMembersRepository.GetMembersAsync(memberRequest).Returns(paginationResult);
+        
         // Act & Assert
-        var membersResult = await _membersController.GetMembers();
-        var okResult = membersResult.Result as OkObjectResult;
+        var membersResult = await _membersController.GetMembers(memberRequest);        var okResult = membersResult.Result as OkObjectResult;
         Assert.That(okResult, Is.Not.Null, OK_ERROR_MESSAGE);
 
         var members = okResult.Value as IReadOnlyList<Member>;

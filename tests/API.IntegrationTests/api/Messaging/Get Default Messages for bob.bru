@@ -6,12 +6,18 @@ meta {
 
 get {
   url: {{baseUrl}}/api/messages
-  body: none
+  body: json
   auth: inherit
 }
 
 headers {
-  Authorization: Bearer {{bob_token}}
+  Authorization: Bearer {{otherToken}}
+}
+
+body:json {
+  {
+    "container": "inbox"
+  }
 }
 
 settings {

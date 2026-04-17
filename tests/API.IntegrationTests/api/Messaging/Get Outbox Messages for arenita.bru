@@ -5,17 +5,19 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}/api/messages?container=Outbox
-  body: none
+  url: {{baseUrl}}/api/messages
+  body: json
   auth: inherit
-}
-
-params:query {
-  container: Outbox
 }
 
 headers {
   Authorization: Bearer {{token}}
+}
+
+body:json {
+  {
+    "container": "outbox"
+  }
 }
 
 settings {

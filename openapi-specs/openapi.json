@@ -630,6 +630,36 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "operationId": "Messages_GetMessagesByContainer",
+        "requestBody": {
+          "x-name": "messageParams",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageParams"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginationResultOfMessageResponse"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -913,6 +943,67 @@
           },
           "content": {
             "type": "string"
+          }
+        }
+      },
+      "PaginationResultOfMessageResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "metadata": {
+            "$ref": "#/components/schemas/PaginationMetadata"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageResponse"
+            }
+          }
+        }
+      },
+      "MessageParams": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PaginationRequest"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "memberId": {
+                "type": "string",
+                "nullable": true
+              },
+              "container": {
+                "$ref": "#/components/schemas/ContainerTypes"
+              }
+            }
+          }
+        ]
+      },
+      "ContainerTypes": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Inbox",
+          "Outbox"
+        ],
+        "enum": [
+          "Inbox",
+          "Outbox"
+        ]
+      },
+      "PaginationRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       }

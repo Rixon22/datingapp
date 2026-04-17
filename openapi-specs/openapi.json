@@ -636,18 +636,43 @@
           "Messages"
         ],
         "operationId": "Messages_GetMessagesByContainer",
-        "requestBody": {
-          "x-name": "messageParams",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MessageParams"
-              }
-            }
+        "parameters": [
+          {
+            "name": "MemberId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
           },
-          "required": true,
-          "x-position": 1
-        },
+          {
+            "name": "Container",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ContainerTypes"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 4
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -995,29 +1020,6 @@
           }
         }
       },
-      "MessageParams": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/PaginationRequest"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "container"
-            ],
-            "properties": {
-              "memberId": {
-                "type": "string",
-                "nullable": true
-              },
-              "container": {
-                "$ref": "#/components/schemas/ContainerTypes"
-              }
-            }
-          }
-        ]
-      },
       "ContainerTypes": {
         "type": "string",
         "description": "",
@@ -1029,20 +1031,6 @@
           "Inbox",
           "Outbox"
         ]
-      },
-      "PaginationRequest": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "pageNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
       }
     }
   }

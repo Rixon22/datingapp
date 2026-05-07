@@ -2,19 +2,26 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { MessagesService } from '../../core/services/messages-service';
 import { Message } from '../../types/message';
 import { PaginationResult } from '../../types/paginationMetadata';
+import { Paginator } from "../../shared/paginator/paginator";
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-messages',
-  imports: [],
+  imports: [Paginator, RouterLink],
   templateUrl: './messages.html',
   styleUrl: './messages.css'
 })
 export class Messages implements OnInit {
   private messagesService = inject(MessagesService);
-  protected container = 'inbox';
+  protected container = 'Inbox';
   protected pageNumber = 1;
   protected pageSize = 10;
   protected paginatedMessages = signal<PaginationResult<Message> | null>(null);
+
+  tabs = [
+    { label: 'Inbox', value: 'Inbox' },
+    { label: 'Outbox', value: 'Outbox' }
+  ]
 
    ngOnInit(): void {
     this.loadMessages()
@@ -24,6 +31,22 @@ export class Messages implements OnInit {
     this.messagesService.getMessages(this.container, this.pageNumber, this.pageSize).subscribe({
       next: response => this.paginatedMessages.set(response)
     });
+  }
+
+  get isInbox() {
+    return this.container === 'Inbox';
+  }
+
+  setContainer(container: string) {
+    this.container = container;
+    this.pageNumber = 1;
+    this.loadMessages();
+  }
+
+  onPageChange(event: { pageNumber: number, pageSize: number }) {
+    this.pageNumber = event.pageNumber;
+    this.pageSize = event.pageSize;
+    this.loadMessages();
   }
 
 }

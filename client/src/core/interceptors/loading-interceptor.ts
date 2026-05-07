@@ -30,6 +30,10 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
     if (req.method.includes('POST') && req.url.includes('/likes')) {
       invalidateCache('/likes');
     }
+
+    if (req.method.includes('POST') && req.url.includes('/messages')) {
+      invalidateCache('/messages');
+    }
     
     if (req.method === 'GET') {
       const cachedResponse = cache.get(cacheKey);
@@ -41,7 +45,7 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
   busyService.busy();
 
   return next(req).pipe(
-    delay(2000),
+    delay(100),
 
     tap(response => {
       cache.set(cacheKey, response)

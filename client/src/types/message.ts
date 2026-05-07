@@ -9,4 +9,5 @@ export type Message = {
   content: string;
   dateRead?: string;
   messageSent: string;
+  currentUserSender?: boolean
 }

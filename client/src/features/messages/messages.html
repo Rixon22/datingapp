@@ -36,8 +36,8 @@
       @for (message of paginatedMessages()?.items; track message.id) {
         <tr
           [class.font-bold]="isInbox && !message.dateRead"
-          routerLink="/members/{{isInbox ? message.senderId : message.recipientId}}"
-          class="hover:bg-base-300 cursor-pointer"
+          routerLink="/members/{{isInbox ? message.senderId : message.recipientId}}/messages"
+          class="hover:bg-base-200 cursor-pointer"
         >
           <td class="w-2/8">
             <div class="flex items-center gap-3">
@@ -48,7 +48,7 @@
             </div>
           </td>
           <td class="truncate w-4/8">{{message.content}}</td>
-          <td class="w-2/8">{{message.messageSent}}</td>
+          <td class="w-2/8">{{message.messageSent | date: 'medium'}}</td>
         </tr>
       }
     </tbody>

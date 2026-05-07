@@ -18,6 +18,14 @@ export class MessagesService {
     params = params.append('pageSize', pageSize);
     params = params.append('container', container);
 
-    return this.http.get<PaginationResult<Message>>(this.baseUrl + 'messages', {params});
+    return this.http.get<PaginationResult<Message>>(this.baseUrl + 'messages', { params });
+  }
+
+  getMessageThread(memberId: string) {
+    return this.http.get<Message[]>(this.baseUrl + 'messages/thread/' + memberId);
+  }
+
+  sendMessage(recipientId: string, content: string) {
+    return this.http.post<Message>(this.baseUrl + 'messages', { recipientId, content });
   }
 }

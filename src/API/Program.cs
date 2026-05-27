@@ -2,11 +2,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.Json.Serialization;
 using API.Data;
+using API.Entities;
 using API.Helpers;
 using API.Interfaces;
 using API.Middlewares;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NSwag;
@@ -36,6 +38,8 @@ public static class Program
 
         AddDbContext(builder);
         AddScopedServices(builder);
+        AddOpenApiDocument(builder);
+        AddIdentity(builder);
 
         builder.Services.AddOpenApiDocument(options =>
         {
@@ -141,4 +145,41 @@ public static class Program
         builder.Services.AddScoped<IPhotoService, PhotoService>();
         builder.Services.AddScoped<ITokenService, TokenService>();
     }
+
+    private static void AddOpenApiDocument(WebApplicationBuilder builder)
+    {
+        builder.Services.AddOpenApiDocument(options =>
+        {
+            options.PostProcess = document =>
+            {
+                document.Info = new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Dating API",
+                    Description = "An ASP.NET Core Web API for managing Dating items",
+                    TermsOfService = "https://example.com/terms",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Example Contact",
+                        Url = "https://example.com/contact"
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Example License",
+                        Url = "https://example.com/license"
+                    }
+                };
+            };
+        });
+    }
+
+    private static void AddIdentity(WebApplicationBuilder builder)
+    {
+        builder.Services.AddIdentityCore<AppUser>(opt =>
+        {
+            opt.Password.RequireNonAlphanumeric = false;
+            opt.User.RequireUniqueEmail = true;
+        })
+        .AddRoles<IdentityRole>()
+        .AddEntityFrameworkStores<AppDbContext>();
 }

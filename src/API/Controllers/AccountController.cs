@@ -44,8 +44,7 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
         {
             DisplayName = request.DisplayName,
             Email = request.Email,
-            PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password)),
-            PasswordSalt = hmac.Key,
+            UserName = request.Email,
             Member = new Member
             {
                 DisplayName = request.DisplayName,
@@ -75,18 +74,12 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
     {
         var user = await context.Users.SingleOrDefaultAsync(u => u.Email == request.Email);
         if (user == null) return Unauthorized("Invalid email or password");
-        using var hmac = new HMACSHA512(user.PasswordSalt);
-        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password));
-        for (var i = 0; i < computedHash.Length; i++)
-        {
-            if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid email or password");
-        }
-
+        
         return user.ToDto(tokenService);
     }
 
     private async Task<bool> EmailExists(string email)
     {
-        return await context.Users.AnyAsync(u => u.Email.ToLower() == email.ToLower());
+        return await context.Users.AnyAsync(u => u.Email!.ToLower() == email.ToLower());
     }
 }

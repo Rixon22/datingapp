@@ -6,7 +6,7 @@ namespace API.Mappers;
 
 public static class AppUserMapper
 {
-    public static UserResponse ToDto(this AppUser user, ITokenService tokenService)
+    public static async Task<UserResponse> ToDto(this AppUser user, ITokenService tokenService)
     {
         return new UserResponse
         {
@@ -14,7 +14,7 @@ public static class AppUserMapper
             DisplayName = user.DisplayName,
             Email = user.Email,
             ImageUrl = user.ImageUrl,
-            Token = tokenService.CreateToken(user)
+            Token = await tokenService.CreateToken(user)
         };
     }
 }

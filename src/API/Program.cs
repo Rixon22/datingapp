@@ -18,7 +18,7 @@ namespace API;
 [ExcludeFromCodeCoverage]
 public static class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddHealthChecks();
@@ -72,12 +72,13 @@ public static class Program
         try
         {
             var context = services.GetRequiredService<AppDbContext>();
+            var userManager = services.GetRequiredService<UserManager<AppUser>>();
             context.Database.Migrate();
-            Task.Run(() => Seed.SeedUsers(context));
+            await Seed.SeedUsers(userManager);
         }
         catch (Exception ex)
         {
-            var logger = services.GetRequiredService<ILogger>();
+            var logger = services.GetRequiredService<ILoggerFactory>().CreateLogger("Startup");
             logger.LogError(ex, "Migration process failed!");
         }
 
@@ -182,4 +183,5 @@ public static class Program
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>();
+    }
 }

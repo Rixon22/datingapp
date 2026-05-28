@@ -12,7 +12,7 @@ public static class AppUserMapper
         {
             Id = user.Id,
             DisplayName = user.DisplayName,
-            Email = user.Email,
+            Email = user.Email!,
             ImageUrl = user.ImageUrl,
             Token = await tokenService.CreateToken(user)
         };

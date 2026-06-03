@@ -103,6 +103,108 @@
         }
       }
     },
+    "/api/Account/token": {
+      "post": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "Account_RefreshToken",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admin/users-with-roles": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admin_GetUsersWithRoles",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admin/roles/{userId}": {
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admin_EditRoles",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "roles",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Admin/photos-to-moderate": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admin_GetPhotosForModeration",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Error/bad-request": {
       "get": {
         "tags": [

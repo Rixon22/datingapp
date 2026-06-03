@@ -7,6 +7,7 @@ using API.Helpers;
 using API.Interfaces;
 using API.Middlewares;
 using API.Services;
+using API.SignalR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -41,29 +42,7 @@ public static class Program
         AddOpenApiDocument(builder);
         AddIdentity(builder);
 
-        builder.Services.AddOpenApiDocument(options =>
-        {
-            options.PostProcess = document =>
-            {
-                document.Info = new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "Dating API",
-                    Description = "An ASP.NET Core Web API for managing Dating items",
-                    TermsOfService = "https://example.com/terms",
-                    Contact = new OpenApiContact
-                    {
-                        Name = "Example Contact",
-                        Url = "https://example.com/contact"
-                    },
-                    License = new OpenApiLicense
-                    {
-                        Name = "Example License",
-                        Url = "https://example.com/license"
-                    }
-                };
-            };
-        });
+
 
         WebApplication app = builder.Build();
 
@@ -74,6 +53,7 @@ public static class Program
             var context = services.GetRequiredService<AppDbContext>();
             var userManager = services.GetRequiredService<UserManager<AppUser>>();
             context.Database.Migrate();
+            await context.Connections.ExecuteDeleteAsync();
             await Seed.SeedUsers(userManager);
         }
         catch (Exception ex)
@@ -88,6 +68,7 @@ public static class Program
         {
             app.UseCors(x => x.AllowAnyHeader()
             .AllowAnyMethod()
+            .AllowCredentials()
             .WithOrigins(
                 "http://localhost:4200",
                 "https://localhost:4200"
@@ -105,7 +86,8 @@ public static class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
-
+        app.MapHub<PresenceHub>("hubs/presence");
+        app.MapHub<MessageHub>("hubs/messages");
         app.Run();
     }
 
@@ -124,7 +106,25 @@ public static class Program
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
+                        {
+                            context.Token = accessToken;
+                        }
+                        
+                        return Task.CompletedTask;
+                    }
+                };
             });
+        builder.Services.AddAuthorizationBuilder()
+            .AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"))
+            .AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
     }
 
     private static void AddDbContext(WebApplicationBuilder builder)
@@ -145,6 +145,8 @@ public static class Program
         builder.Services.AddScoped<UserActivityLogger>();
         builder.Services.AddScoped<IPhotoService, PhotoService>();
         builder.Services.AddScoped<ITokenService, TokenService>();
+        builder.Services.AddSignalR();
+        builder.Services.AddSingleton<PresenceTracker>();
     }
 
     private static void AddOpenApiDocument(WebApplicationBuilder builder)

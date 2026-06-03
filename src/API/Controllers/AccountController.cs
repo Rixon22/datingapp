@@ -51,18 +51,22 @@ public class AccountController(UserManager<AppUser> userManager, ITokenService t
                 BirthDay = request.BirthDay
             }
         };
-        
+
         var result = await userManager.CreateAsync(user, request.Password);
 
         if (!result.Succeeded)
         {
-            foreach(var error in result.Errors)
+            foreach (var error in result.Errors)
             {
                 ModelState.AddModelError("identity", error.Description);
             }
 
             return ValidationProblem();
         }
+
+        await userManager.AddToRoleAsync(user, "Member");
+
+        await SetRefreshTokenCookie(user);
 
         return await user.ToDto(tokenService);
     }
@@ -82,11 +86,47 @@ public class AccountController(UserManager<AppUser> userManager, ITokenService t
         var user = await userManager.FindByEmailAsync(request.Email);
 
         if (user == null) return Unauthorized("Invalid email or password");
-        
+
         var result = await userManager.CheckPasswordAsync(user, request.Password);
 
         if (!result) return Unauthorized("Invalid username or password");
 
+        await SetRefreshTokenCookie(user);
+
         return await user.ToDto(tokenService);
+    }
+
+    [HttpPost("token")]
+    public async Task<ActionResult<UserResponse>> RefreshToken()
+    {
+        var refreshToken = Request.Cookies["refreshToken"];
+        if (refreshToken == null) return NoContent();
+
+        var user = await userManager.Users
+            .FirstOrDefaultAsync(x => x.RefreshToken == refreshToken && x.RefreshTokenExpiry > DateTime.UtcNow);
+
+        if (user == null) return Unauthorized();
+
+        await SetRefreshTokenCookie(user);
+        
+        return await user.ToDto(tokenService);
+    }
+
+    private async Task SetRefreshTokenCookie(AppUser user)
+    {
+        var refreshToken = tokenService.GenerateRefreshToken();
+        user.RefreshToken = refreshToken;
+        user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(7);
+        await userManager.UpdateAsync(user);
+
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true, // Not accesible from client side
+            Secure = true, // Only sent over HTTPS
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow.AddDays(7)
+        };
+
+        Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
     }
 }

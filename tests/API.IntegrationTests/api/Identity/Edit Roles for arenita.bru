@@ -1,19 +1,28 @@
 meta {
   name: Edit Roles for arenita
   type: http
-  seq: 13
+  seq: 12
 }
 
-post {
-  url: {{baseUrl}}/api/admin/edit-roles/arenita-id?roles=Moderator,Member
+put {
+  url: {{baseUrl}}/api/admin/roles/arenita-id?roles=Moderator,Member
   body: none
-  auth: inherit
+  auth: bearer
 }
 
 params:query {
   roles: Moderator,Member
 }
 
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  { "Moderator", "Member" }
+}
+
 settings {
   encodeUrl: true
+  timeout: 0
 }

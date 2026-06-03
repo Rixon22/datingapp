@@ -1,0 +1,20 @@
+meta {
+  name: Get Roles as arenita
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/admin/users-with-roles
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

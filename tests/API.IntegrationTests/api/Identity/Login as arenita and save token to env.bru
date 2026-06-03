@@ -5,30 +5,28 @@ meta {
 }
 
 post {
-  url: {{baseUrl}}/api/login
+  url: {{baseUrl}}/api/account/login
   body: json
   auth: inherit
 }
 
 body:json {
   {
-  	"email": "arenita@test.com",
-  	"password": "Pa$$w0rd"
+    "email": "arenita@test.com",
+    "password": "Pa$$w0rd"
   }
 }
 
-script:post-response {
-  const user = res.getBody();
-  
-  test("Has properties", function () {
-      expect(user).to.have.property('accessToken');
+tests {
+  test("Should be able to login", function() {
+    expect(res.getStatus()).to.equal(200);
   });
   
-  if (test("Has properties")) {
-      bru.setGlobalEnvVar('token', user.accessToken);
-  }
+  const data = res.body;
+  bru.setVar('token', data.token);
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }
